@@ -34,13 +34,13 @@ public class CityControllerIT {
 	public void findAllShouldReturnAllResourcesSortedByName() throws Exception {
 		
 		ResultActions result =
-				mockMvc.perform(get("/cities")
+				mockMvc.perform(get("/city")
 					.contentType(MediaType.APPLICATION_JSON));
 
 		result.andExpect(status().isOk());
-		result.andExpect(jsonPath("$[0].name").value("Belo Horizonte"));
-		result.andExpect(jsonPath("$[1].name").value("Belém"));
-		result.andExpect(jsonPath("$[2].name").value("Brasília"));
+		result.andExpect(jsonPath("$.content[0].name").value("Belo Horizonte"));
+		result.andExpect(jsonPath("$.content[1].name").value("Belém"));
+		result.andExpect(jsonPath("$.content[2].name").value("Brasília"));
 	}
 	
 	@Test
@@ -50,7 +50,7 @@ public class CityControllerIT {
 		String jsonBody = objectMapper.writeValueAsString(dto);
 		
 		ResultActions result =
-				mockMvc.perform(post("/cities")
+				mockMvc.perform(post("/city")
 					.content(jsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON));
@@ -66,7 +66,7 @@ public class CityControllerIT {
 		Long independentId = 5L;
 		
 		ResultActions result =
-				mockMvc.perform(delete("/cities/{id}", independentId));
+				mockMvc.perform(delete("/city/{id}", independentId));
 		
 		
 		result.andExpect(status().isNoContent());
@@ -78,7 +78,7 @@ public class CityControllerIT {
 		Long nonExistingId = 50L;
 		
 		ResultActions result =
-				mockMvc.perform(delete("/cities/{id}", nonExistingId));
+				mockMvc.perform(delete("/city/{id}", nonExistingId));
 
 		result.andExpect(status().isNotFound());
 	}
@@ -90,7 +90,7 @@ public class CityControllerIT {
 		Long dependentId = 1L;
 		
 		ResultActions result =
-				mockMvc.perform(delete("/cities/{id}", dependentId));
+				mockMvc.perform(delete("/city/{id}", dependentId));
 				
 		result.andExpect(status().isBadRequest());
 	}
