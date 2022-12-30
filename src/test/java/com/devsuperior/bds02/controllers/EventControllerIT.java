@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.bds02.dto.EventDTO;
@@ -38,13 +39,13 @@ public class EventControllerIT {
 		String jsonBody = objectMapper.writeValueAsString(dto);
 		
 		ResultActions result =
-				mockMvc.perform(put("/events/{id}", existingId)
+				mockMvc.perform(put("/event/{id}", existingId)
 					.content(jsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON));
 		
 		result.andExpect(status().isOk());
-		result.andExpect(jsonPath("$.id").exists());
+		result.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
 		result.andExpect(jsonPath("$.id").value(1L));		
 		result.andExpect(jsonPath("$.name").value("Expo XP"));
 		result.andExpect(jsonPath("$.date").value("2021-05-18"));
@@ -61,7 +62,7 @@ public class EventControllerIT {
 		String jsonBody = objectMapper.writeValueAsString(dto);
 		
 		ResultActions result =
-				mockMvc.perform(put("/events/{id}", nonExistingId)
+				mockMvc.perform(put("/event/{id}", nonExistingId)
 					.content(jsonBody)
 					.contentType(MediaType.APPLICATION_JSON)
 					.accept(MediaType.APPLICATION_JSON));
